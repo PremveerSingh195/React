@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useState , useEffect} from 'react'
+import { useState , useEffect , useRef} from 'react'
 
 
   
@@ -9,8 +9,10 @@ import { useState , useEffect} from 'react'
     const [number , setNumber] = useState(false)
     const [char ,setChar] = useState(false)
   
+    // useRef hook
+    const passwordRef = useRef(null)
   
-    const passwordGenerator = useCallback(() => {
+    const passwordGenerator = () => {
       let  pass = ""
        let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
@@ -26,12 +28,20 @@ import { useState , useEffect} from 'react'
              pass += str.charAt(char) 
         }
         setPassword(pass)
- },[length , number , char , setPassword])
+ }
   
 useEffect(() => {
   passwordGenerator()
-},[length,char,number ,passwordGenerator])
+},[length,char,number , setPassword])
 
+//////////////////////////////////////////////////
+
+
+const copyPasswordToClipboard = useCallback(() => {
+  passwordRef.current?.select()
+  passwordRef.current?.setSelectionRange(0,20)
+window.navigator.clipboard.writeText(password)
+},[password])
 
 
   return (
@@ -42,8 +52,18 @@ useEffect(() => {
      <h1 className='text-white text-center my-3'>Password generator</h1>
 
      <div className='flex mb-4'>
-        <input type="text"  value={password} placeholder=' Password' className='w-full ml-5 mb-4 rounded-md ' readOnly />
-        <button className='mr-5 mb-4 bg-blue-600 text-white text-2xl p-2 rounded-md'>Copy</button>
+
+        <input type="text"  
+        value={password} 
+        placeholder=' Password' 
+        className='w-full ml-5 mb-4 rounded-md ' readOnly 
+        ref={passwordRef}
+        />
+
+        <button 
+        className='mr-5 mb-4 bg-blue-600 text-white text-2xl p-2 rounded-md'
+        onClick={copyPasswordToClipboard}
+        >Copy</button>
      </div>
 
      <div className='flex mx-4 gap-x-5 mb-3 justify-center align-middle'>
