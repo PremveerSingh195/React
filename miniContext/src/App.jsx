@@ -13,7 +13,6 @@ function App() {
     <UserContextProvider>
      <Login/>
      <Profile/>
-
     </UserContextProvider>
   )
 }
