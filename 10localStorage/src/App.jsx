@@ -7,7 +7,6 @@ function App() {
 
   const addTodo = (todo) =>{
            setTodos((prev)=> [{id : Date.now(), ...todo} , ...prev])
-
   }
 
   const updatedTodo = (id , todo) => {
